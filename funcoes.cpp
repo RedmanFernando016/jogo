@@ -41,9 +41,9 @@ void Criador(std::vector<Mapa> &mapas){
                 mapas[i].bloco = '|';
             }
         }
-
+// VERIFICAR AQUI
         for(int i = 1; i < mapas.size() - 1; i++){ 
-            if(mapas[i + 16].bloco > mapas.size() || mapas[i - 16].bloco < 0){
+            if(i > mapas.size() || i < 0){
 
             } else{
                 if(mapas[i].bloco == '|' && mapas[i + 1].bloco == '|' && mapas[i - 1].bloco == '|'){ 
@@ -57,17 +57,62 @@ void Criador(std::vector<Mapa> &mapas){
     } while (VerificacaoMapa == false);
 }
 
-void Caminho(std::vector<Mapa> &mapas){
-    int a;
+void CaminhoGarantido(std::vector<Mapa> &mapas){
+    const int largura = 20; 
 
-    srand((unsigned) time(nullptr));
-    a = ran();
-    
-    mapas[0].bloco = a;
-    for(int i = 0; i < mapas.size(); i++){
-        
+    int numero;
+
+    vector<int> IntervaloDefinido;  
+    vector<int> intervalo;        
+
+    IntervaloDefinido.reserve(12); 
+
+
+    while(intervalo.size() < 200){
+        intervalo.push_back((int)intervalo.size() + 1);
     }
+
+
+    for(int i = 1; i <= 200; i += 20){
+        int j = i + 19;
+
+        if(j > 200){
+            j = 200;
+        } 
+
+        numero = (rand() % (j - i + 1)) + i;
+        IntervaloDefinido.push_back(numero);
+    }
+
+    IntervaloDefinido.push_back(200);
+
+    for(int k = 0; k < IntervaloDefinido.size(); k++){
+        int idx = IntervaloDefinido[k] - 1; 
+
+        int posA = idx; 
+        int linha = idx / largura; 
+        int coluna = idx % largura; 
+
+        if(idx >= 0 && idx < (int)mapas.size()){
+            if(mapas[idx].bloco == '|'){
+                mapas[idx].bloco = '.';
+            }
+        }
+    }
+
 }
+
+
+void DecidirCaminho(std::vector<Mapa> &mapas, vector<int> &IntervaloDefinido[k], int largura, int posA, int & idx){
+    int r = idx / 20;
+    int c = idx % 20;
+    int rd = k / 20;
+    int cd = k % 20;
+
+    int dist = (r - rd) + (c - cd);
+    
+}
+
 
 
 

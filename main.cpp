@@ -8,5 +8,6 @@ int main(){
 
     Criador(mapas);
     Imprimir(mapas);
+    CaminhoGarantido(mapas);
     return 0;
 }

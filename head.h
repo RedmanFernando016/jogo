@@ -8,5 +8,7 @@ struct Mapa{
 
 void Criador(std::vector<Mapa> &mapas); 
 void Imprimir(std::vector<Mapa> &mapas);
+void CaminhoGarantido(std::vector<Mapa> &mapas);
+void DecidirCaminho(std::vector<Mapa> &mapas);
 
 #endif
