@@ -11,12 +11,10 @@ void Criador(std::vector<Mapa> &mapas){
     int a, x; 
     bool VerificacaoMapa = true; 
 
-    srand((unsigned) time(nullptr));
-
     for(int i = 0; i < mapas.size(); i++){
-        a = rand(); 
+        a = rand() % 100; 
 
-        if(a % 2 == 0){
+        if(a < 25){
             mapas[i].bloco = '.'; 
         } else {
             mapas[i].bloco = '|'; 
@@ -58,20 +56,12 @@ void Criador(std::vector<Mapa> &mapas){
 }
 
 void CaminhoGarantido(std::vector<Mapa> &mapas){
-    const int largura = 20; 
+    const int largura = 20;
 
     int numero;
+    vector<int> IntervaloDefinido;
 
-    vector<int> IntervaloDefinido;  
-    vector<int> intervalo;        
-
-    IntervaloDefinido.reserve(12); 
-
-
-    while(intervalo.size() < 200){
-        intervalo.push_back((int)intervalo.size() + 1);
-    }
-
+    IntervaloDefinido.reserve(12);
 
     for(int i = 1; i <= 200; i += 20){
         int j = i + 19;
@@ -85,38 +75,47 @@ void CaminhoGarantido(std::vector<Mapa> &mapas){
     }
 
     IntervaloDefinido.push_back(200);
+    
+    int idxAtual = 0;
 
     for(int k = 0; k < IntervaloDefinido.size(); k++){
-        int idx = IntervaloDefinido[k] - 1; 
+        int destino = IntervaloDefinido[k] - 1; 
 
-        int posA = idx; 
-        int linha = idx / largura; 
-        int coluna = idx % largura; 
+        DecidirCaminho(mapas, largura, idxAtual, destino);
+    }
+}
 
-        if(idx >= 0 && idx < (int)mapas.size()){
-            if(mapas[idx].bloco == '|'){
-                mapas[idx].bloco = '.';
-            }
+void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino){
+
+    while(idx != destino){
+        int r  = idx / largura;
+        int c  = idx % largura;
+        int rd = destino / largura;
+        int cd = destino % largura;
+
+
+        if(mapas[idx].bloco == '|'){
+            mapas[idx].bloco = '.';
+        }
+
+        if(r < rd){
+            idx += largura;
+        }
+        else if(r > rd){
+            idx -= largura;
+        }
+        else if(c < cd && c < largura - 1){
+            idx += 1;
+        }
+        else if(c > cd && c > 0){
+            idx -= 1; 
+        }
+
+        if(mapas[idx].bloco == '|'){
+            mapas[idx].bloco = '.';
         }
     }
-
 }
-
-
-void DecidirCaminho(std::vector<Mapa> &mapas, vector<int> &IntervaloDefinido[k], int largura, int posA, int & idx){
-    int r = idx / 20;
-    int c = idx % 20;
-    int rd = k / 20;
-    int cd = k % 20;
-
-    int dist = (r - rd) + (c - cd);
-    
-}
-
-
-
-
-
 
 void Imprimir(std::vector<Mapa> &mapas){
     int contador = 0;
@@ -125,7 +124,7 @@ void Imprimir(std::vector<Mapa> &mapas){
 
     for(int i = 0; i < mapas.size(); i++){
         cout << mapas[i].bloco << "  ";
-        contador++; 
+        contador++;
 
         if(contador == 20){
             contador = 0;
