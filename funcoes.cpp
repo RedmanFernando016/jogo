@@ -5,6 +5,8 @@
 #include "head.h"
 using namespace std; 
 
+const int largura = 20;
+
 void Criador(std::vector<Mapa> &mapas){
     mapas.resize(200);
 
@@ -12,7 +14,7 @@ void Criador(std::vector<Mapa> &mapas){
     bool VerificacaoMapa = true; 
 
     for(int i = 0; i < mapas.size(); i++){
-        a = rand() % 100; 
+        a = rand() % 101; 
 
         if(a < 25){
             mapas[i].bloco = '.'; 
@@ -53,10 +55,27 @@ void Criador(std::vector<Mapa> &mapas){
 
         
     } while (VerificacaoMapa == false);
+
+    CaminhoGarantido(mapas);
+
+
+    for(int i = 0; i < mapas.size(); i++){
+        a = rand() % 10;
+        int $;
+
+        if(mapas[i].bloco == '.'){
+            x = rand() % 18;
+            if(x < 1){
+                mapas[i].bloco = '$';
+                mapas[i].valor = a;
+            }
+        }
+    }
+
+    
 }
 
 void CaminhoGarantido(std::vector<Mapa> &mapas){
-    const int largura = 20;
 
     int numero;
     vector<int> IntervaloDefinido;
@@ -68,7 +87,7 @@ void CaminhoGarantido(std::vector<Mapa> &mapas){
 
         if(j > 200){
             j = 200;
-        } 
+        }
 
         numero = (rand() % (j - i + 1)) + i;
         IntervaloDefinido.push_back(numero);
@@ -88,31 +107,24 @@ void CaminhoGarantido(std::vector<Mapa> &mapas){
 void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino){
 
     while(idx != destino){
-        int r  = idx / largura;
-        int c  = idx % largura;
-        int rd = destino / largura;
-        int cd = destino % largura;
+        int linha = idx / largura;
+        int coluna = idx % largura;
+        int linhaDestino = destino / largura;
+        int colunaDestino = destino % largura;
 
 
         if(mapas[idx].bloco == '|'){
             mapas[idx].bloco = '.';
         }
 
-        if(r < rd){
+        if(linha < linhaDestino){
             idx += largura;
-        }
-        else if(r > rd){
+        } else if(linha > linhaDestino){
             idx -= largura;
-        }
-        else if(c < cd && c < largura - 1){
+        } else if(coluna < colunaDestino && coluna < largura - 1){
             idx += 1;
-        }
-        else if(c > cd && c > 0){
+        } else if(coluna > colunaDestino && coluna > 0){
             idx -= 1; 
-        }
-
-        if(mapas[idx].bloco == '|'){
-            mapas[idx].bloco = '.';
         }
     }
 }

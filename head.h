@@ -7,13 +7,13 @@ using namespace std;
 
 struct Mapa{
     char bloco; 
+    int valor;
 };
 
 void Criador(std::vector<Mapa> &mapas); 
 void Imprimir(std::vector<Mapa> &mapas);
 void CaminhoGarantido(std::vector<Mapa> &mapas);
 void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino);
-
 
 
 //Funções das entidades
@@ -26,8 +26,9 @@ struct Item{
 struct Jogador{
     int vida, estamina;
     string ataques;
+    double dinheiro = 0.0;
 
-    vector<Item> inventario;
+    vector<Item> inventario = vector<Item>(3);
 };
 
 struct Monstro{
@@ -36,11 +37,12 @@ struct Monstro{
     
 };
 
-void MovimentoJogador(std::vector<Mapa> &mapas);
+void MovimentoJogador(std::vector<Mapa> &mapas, std::vector<Item> &inventario, struct Jogador &player);
 void MovimentoMonstro(std::vector<Mapa> &mapas);
 void PegarItem(std::vector<Item> &inventario, const Item &item);
-void AbrirInventario(std::vector<Item> &inventario, const Item &item);
+void AbrirInventario(std::vector<Item> &inventario);
 void LargarItem(std::vector<Item> &inventario, const Item &item);
+Item CriarPocao(), CriarBroca();
 
 
 

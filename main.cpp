@@ -9,7 +9,6 @@ int main(){
     vector<Mapa> mapas(200);
 
     Criador(mapas);
-    CaminhoGarantido(mapas);
     Imprimir(mapas);
     return 0;
 }
