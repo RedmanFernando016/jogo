@@ -100,7 +100,7 @@ void MovimentoJogador(std::vector<Mapa> &mapas, std::vector<Item> &inventario, s
 
 
         do{
-            if(mapas[idx].bloco == '+'){
+            if(mapas[idx].bloco == '+' || mapas[idx].bloco == 'T'){
                 cout << "\n Deseja coletar o item? \n";
                 cout << "1 - Sim";
                 cout << "2 - Não";
