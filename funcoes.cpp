@@ -10,7 +10,7 @@ const int largura = 20;
 void Criador(std::vector<Mapa> &mapas){
     mapas.resize(200);
 
-    int a, x, count; 
+    int a, x, count = 0; 
     bool VerificacaoMapa = true; 
 
     for(int i = 0; i < mapas.size(); i++){
@@ -72,7 +72,7 @@ void Criador(std::vector<Mapa> &mapas){
         }
     }
 
-//pos. broca (T)
+//pos. broca (T) - 50%
 
     bool VerificacaoCasa = false;
     a = rand() % 2;
@@ -93,28 +93,28 @@ void Criador(std::vector<Mapa> &mapas){
     }
     
     
-//pos. cura (+)
+//pos. cura (+) - 33%
 
-    a = rand() % 3;
+    a = rand() % 3 + 1;
     VerificacaoCasa = false;
 
     if(a == 1){
+        x = 0;
         x = rand() % 3;
-
+        cout << "\nqtds cura: " << x;
         do{
             a = rand() % 199;
 
             for(int i = 0; i < mapas.size(); i++){
                 if(i == a){
-                    if(mapas[i].bloco == '.'){
-                        mapas[i].bloco == '+';
-                        VerificacaoCasa = true;
+                    if(mapas[i].bloco == '.' && mapas[i].bloco != '+'){
+                        mapas[i].bloco = '+';
                         count++;
                     }
                 }
             }
-        } while(VerificacaoCasa == false && count != x);
-    }
+        } while(count != x);
+    } count = 0;
 }
 
 void CaminhoGarantido(std::vector<Mapa> &mapas){
