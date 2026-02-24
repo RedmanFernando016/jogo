@@ -1,12 +1,13 @@
 #ifndef HEAD_H
 #define HEAD_H
 #include <vector> 
+#include <windows.h>
 using namespace std;
 
 // Funções do mapa
 
 struct Mapa{
-    char bloco; 
+    string bloco; 
     int valor;
 };
 
@@ -19,8 +20,8 @@ void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino
 //Funções das entidades
 
 struct Item{
-    string nome;
-    int quantidade;
+    string nome, img;
+    int quantidade; 
 };
 
 struct Jogador{
@@ -42,6 +43,11 @@ void MovimentoMonstro(std::vector<Mapa> &mapas);
 void PegarItem(std::vector<Item> &inventario, const Item &item);
 void AbrirInventario(std::vector<Item> &inventario);
 void LargarItem(std::vector<Item> &inventario, const Item &item);
+void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player);
+void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player);
+void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player);
+void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player);
+
 Item CriarPocao(), CriarBroca();
 
 

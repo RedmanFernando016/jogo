@@ -2,12 +2,15 @@
 #include <vector>
 #include <time.h>
 #include <cstdlib>
+#include <windows.h>
 #include "head.h"
 using namespace std; 
 
 const int largura = 20;
 
 void Criador(std::vector<Mapa> &mapas){
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
     mapas.resize(200);
 
     int a, x, count = 0; 
@@ -17,28 +20,28 @@ void Criador(std::vector<Mapa> &mapas){
         a = rand() % 101; 
 
         if(a < 25){
-            mapas[i].bloco = '.'; 
+            mapas[i].bloco = "."; 
         } else {
-            mapas[i].bloco = '|'; 
+            mapas[i].bloco = "|"; 
         }
     }
 
-    mapas[0].bloco = '@'; 
-    mapas[199].bloco = 'Q';
+    mapas[0].bloco = "@"; 
+    mapas[199].bloco = "Q";
 
     do{ 
         VerificacaoMapa = true;
         
         for(int i = 1; i < mapas.size() - 1; i++){
-            if(mapas[i].bloco == '#'){
+            if(mapas[i].bloco == "#"){
                 a = rand();
 
                 if(a % 2 == 0){
-                    mapas[i + 1].bloco = '.'; 
+                    mapas[i + 1].bloco = "."; 
                 } else {
-                    mapas[i - 1].bloco = '.';
+                    mapas[i - 1].bloco = ".";
                 }
-                mapas[i].bloco = '|';
+                mapas[i].bloco = "|";
             }
         }
 // VERIFICAR AQUI
@@ -46,9 +49,9 @@ void Criador(std::vector<Mapa> &mapas){
             if(i > mapas.size() || i < 0){
 
             } else{
-                if(mapas[i].bloco == '|' && mapas[i + 1].bloco == '|' && mapas[i - 1].bloco == '|'){ 
+                if(mapas[i].bloco == "|" && mapas[i + 1].bloco == "|" && mapas[i - 1].bloco == "|"){ 
                     VerificacaoMapa = false; 
-                    mapas[i].bloco = '#';  
+                    mapas[i].bloco = "#";  
                 } 
             }
         } 
@@ -63,7 +66,7 @@ void Criador(std::vector<Mapa> &mapas){
         a = rand() % 10;
         int $;
 
-        if(mapas[i].bloco == '.'){
+        if(mapas[i].bloco == "."){
             x = rand() % 18;
             if(x < 1){
                 mapas[i].bloco = '$';
@@ -83,8 +86,8 @@ void Criador(std::vector<Mapa> &mapas){
 
             for(int i = 0; i < mapas.size(); i++){
                 if(i == a){
-                    if(mapas[i].bloco == '.'){
-                        mapas[i].bloco = 'T';
+                    if(mapas[i].bloco == "."){
+                        mapas[i].bloco = "⛏";
                         VerificacaoCasa = true;
                     }
                 }
@@ -107,7 +110,7 @@ void Criador(std::vector<Mapa> &mapas){
 
             for(int i = 0; i < mapas.size(); i++){
                 if(i == a){
-                    if(mapas[i].bloco == '.' && mapas[i].bloco != '+'){
+                    if(mapas[i].bloco == "." && mapas[i].bloco != "✚"){
                         mapas[i].bloco = '+';
                         count++;
                     }
@@ -155,8 +158,8 @@ void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino
         int colunaDestino = destino % largura;
 
 
-        if(mapas[idx].bloco == '|'){
-            mapas[idx].bloco = '.';
+        if(mapas[idx].bloco == "|"){
+            mapas[idx].bloco = ".";
         }
 
         if(linha < linhaDestino){

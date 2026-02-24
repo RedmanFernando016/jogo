@@ -5,9 +5,10 @@ using namespace std;
 const int largura = 20;
 
 void MovimentoJogador(std::vector<Mapa> &mapas, std::vector<Item> &inventario, struct Jogador &player){
-    bool ValidacaoMovimento = false, ConcluiuMapa = false; 
-    char movimento, BlocoEspecial = '\0';
+    bool ValidacaoMovimento, ConcluiuMapa; 
+    char movimento;
     int idx, escolha = 0;
+    string BlocoEspecial = "nulo";
     vector<Item> inventario;
 
 
@@ -16,183 +17,22 @@ void MovimentoJogador(std::vector<Mapa> &mapas, std::vector<Item> &inventario, s
         cin >> movimento;
 
         for(int i = 0; i < mapas.size(); i++){
-            if(mapas[i].bloco == '@');
+            if(mapas[i].bloco == "@");
             idx = i;
         }
 
-        if(movimento == 'w' || movimento =='W'){
-            if(0 <= idx >= 19){
-                cout << "Movimento inválido, tente novamente!\n";
-                ValidacaoMovimento = false;
-                break;
-            }
-
-            if(mapas[idx - 20].bloco == '|' || idx - 20 < mapas.size()){
-                ValidacaoMovimento = false;
-                cout << "\nMovimento inválido, tente novamente! \n";
-            } else {
-                mapas[idx].bloco = '.';
-                mapas[idx - 20].bloco = '@';
-                idx = idx - 20;
-                ValidacaoMovimento = true;
-                return;
-            }
-        }
-
-        if(movimento == 'a' || movimento == 'A'){
-            if(idx % largura == 0){
-                cout << "Movimento inválido, tente novamente!\n";
-                ValidacaoMovimento = false;
-                break;
-            }
-
-            if(mapas[idx - 1].bloco == '|' || idx - 1 < mapas.size()){
-                ValidacaoMovimento = false;
-                cout << "\nMovimento inválido, tente novamente! \n";
-            } else {
-                mapas[idx].bloco = '.';
-                mapas[idx - 1].bloco = '@';
-                idx = idx - 1;
-                ValidacaoMovimento = true;
-                return;
-            }
-        }
-
-        if(movimento == 's' || movimento == 'S'){
-            if(mapas[idx + 20].bloco == '|' || idx + 20 > mapas.size()){
-                ValidacaoMovimento = false;
-                cout << "\nMovimento inválido, tente novmaente! \n";
-            } else if (mapas[idx + 1].bloco == 'Q'){
-                ConcluiuMapa = true;
-                ValidacaoMovimento = true;
-                return; 
-            } else {
-                mapas[idx].bloco = '.';
-                mapas[idx + 20].bloco = '@';
-                idx = idx + 20;
-                ValidacaoMovimento = true;
-                return;
-            }
-        }
-
         if(movimento == 'd' || movimento == 'D'){
-            if(idx % largura == largura - 1){
-                cout << "Movimento inválido, tente novamente!\n";
-                ValidacaoMovimento = false;
-                break;
-            }
+            AndarDireita(mapas, player);
+        } else if (movimento == 'a' || movimento == 'A'){
+            AndarEsquerda(mapas, player);
+        } else if (movimento == 'w' || movimento == 'W'){
+            AndarCima (mapas, player);
+        } else if (movimento == 's' || movimento == 'S'){
+            AndarBaixo(mapas, player);
+        } else if (movimento == 'c' || movimento == 'C'){
+            AbrirInventario(inventario); 
+        } 
 
-            if(mapas[idx + 1].bloco == '|'){
-                ValidacaoMovimento = false;
-                cout << "\nMovimento inválido, tente novamente! \n";
-
-            } else if(mapas[idx + 1].bloco == 'Q'){
-                ConcluiuMapa = true;
-                ValidacaoMovimento = true;
-                return;
-
-            } else if(BlocoEspecial != '\0'){
-                if(BlocoEspecial == '+'){
-                    mapas[idx].bloco = '+'; 
-                    if(mapas[idx + 1].bloco == '$'){
-                        idx = idx + 1;
-                        player.dinheiro += mapas[idx].valor; 
-                        mapas[idx].bloco = '@';
-                        ValidacaoMovimento = true;
-                        BlocoEspecial = '\0';
-                        return;
-                    } else {
-                        mapas[idx + 1].bloco = '@';
-                        BlocoEspecial = '\0';
-                        ValidacaoMovimento = true;
-                        idx = idx + 1;
-                        return;
-                    }
-                } else {
-                    mapas[idx].bloco = 'T';
-                    if(mapas[idx + 1].bloco == '$'){
-                        idx = idx + 1;
-                        player.dinheiro += mapas[idx].valor; 
-                        mapas[idx].bloco = '@';
-                        ValidacaoMovimento = true;
-                        BlocoEspecial = '\0';
-                        return;
-                    } else {
-                        mapas[idx + 1].bloco = '@';
-                        BlocoEspecial = '\0';
-                        ValidacaoMovimento = true;
-                        idx = idx + 1;
-                        return; 
-                    }
-                }
-
-            } else if(mapas[idx + 1].bloco == '+' || mapas[idx + 1].bloco == 'T'){
-                BlocoEspecial = mapas[idx + 1].bloco;
-                mapas[idx].bloco = '.';
-                mapas[idx + 1].bloco = '@';
-                idx = idx + 1; 
-                ValidacaoMovimento = true; 
-
-            } else if (mapas[idx + 1].bloco == '$'){
-                mapas[idx].bloco = '.';
-                idx = idx + 1;
-                mapas[idx].bloco = '@';                
-                player.dinheiro += mapas[idx].valor; 
-                return;
-
-            } else {
-                mapas[idx].bloco = '.';
-                mapas[idx + 1].bloco = '@';
-                idx = idx + 1;
-                ValidacaoMovimento = true; 
-                return;
-            }
-        }
-
-        do{
-            if(BlocoEspecial == '+' || BlocoEspecial == 'T'){
-                cout << "\n Deseja coletar o item? \n";
-                cout << "1 - Sim";
-                cout << "2 - Não";
-                cin >> escolha;
-
-                if(escolha == 1){
-                    if (player.inventario.size() < 3){
-                        if(BlocoEspecial == '+'){
-                            Item novo = CriarPocao();
-                            player.inventario.push_back(novo);
-                            cout << "\nPoção de cura adicionado ao inventário!\n";
-                            ValidacaoMovimento = false;
-                            BlocoEspecial = '\0';
-                            return;
-                        } else {
-                            Item novo = CriarBroca();
-                            player.inventario.push_back(novo);
-                            cout << "\nBroca adicionada ao inventário!\n";
-                            ValidacaoMovimento = false;
-                            BlocoEspecial = '\0';
-                            return;
-                        }
-                    } else {
-                        cout << "\nInventário cheio!\n";
-                        ValidacaoMovimento = false;
-                        return;
-                    }
-                }
-                if(escolha == 2){
-                    ValidacaoMovimento = false;
-                    return;
-                }
-                if(escolha < 1 || escolha > 2){
-                    cout << "\nOpção inválida, tente novamente!\n";
-                }
-            } 
-        } while(escolha < 1 || escolha > 2);
-
-        if(movimento == 'c' || movimento == 'C'){
-            AbrirInventario(inventario);
-            ValidacaoMovimento = false; 
-        }
 
     } while (ValidacaoMovimento == false);
 }
@@ -200,7 +40,9 @@ void MovimentoJogador(std::vector<Mapa> &mapas, std::vector<Item> &inventario, s
 void AbrirInventario(std::vector<Item> &inventario){
 
     cout << "\n-------- INVENTÁRIO --------\n";
-    cout << "_";
+    cout << " - \n";
+    cout << "|" << "|";
+    cout << " - ";
 }
 
 void LargarItem(std::vector<Item> &inventario, const Item &item){
@@ -209,14 +51,496 @@ void LargarItem(std::vector<Item> &inventario, const Item &item){
 
 Item CriarPocao(){
     Item i; 
-    i.nome = "Poção_Cura";
+    i.nome = "Poção de Cura";
     i.quantidade = 1;
+    i.img = "✚";
     return i;
 }
 Item CriarBroca(){
     Item i; 
     i.nome = "Broca";
     i.quantidade = 1;
+    i.img =  "⛏";
     return i;
 }
 
+
+void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player){
+    bool ValidacaoMovimento = false, ConcluiuMapa = false; 
+    char movimento;
+    string BlocoEspecial = "nulo";
+    int idx, escolha = 0;
+    vector<Item> inventario;
+    
+    if(movimento == 'd' || movimento == 'D'){
+        if(idx % largura == largura - 1){
+            cout << "Movimento inválido, tente novamente!\n";
+            ValidacaoMovimento = false;
+            return;
+        }
+
+        if(mapas[idx + 1].bloco == "|"){
+            ValidacaoMovimento = false;
+            cout << "\nMovimento inválido, tente novamente! \n";
+
+        } else if(mapas[idx + 1].bloco == "Q"){
+            ConcluiuMapa = true;
+            ValidacaoMovimento = true;
+            return;
+
+        } else if(BlocoEspecial != "nulo"){
+            if(BlocoEspecial == "✚"){
+                mapas[idx].bloco = "✚"; 
+                if(mapas[idx + 1].bloco == "$"){
+                    idx = idx + 1;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx + 1].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx + 1;
+                    return;
+                }
+            } else {
+                mapas[idx].bloco = " ⛏";
+                if(mapas[idx + 1].bloco == "$"){
+                    idx = idx + 1;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx + 1].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx + 1;
+                    return; 
+                }
+            }
+
+        } else if(mapas[idx + 1].bloco == "✚" || mapas[idx + 1].bloco == " ⛏"){
+            BlocoEspecial = mapas[idx + 1].bloco;
+            mapas[idx].bloco = ".";
+            mapas[idx + 1].bloco = "@";
+            idx = idx + 1; 
+            ValidacaoMovimento = true; 
+            //Nota: Não colcoar return, se verdadeiro, vai cair na função de baixo
+
+        } else if (mapas[idx + 1].bloco == "$"){
+            mapas[idx].bloco = ".";
+            idx = idx + 1;
+            mapas[idx].bloco = "@";                
+            player.dinheiro += mapas[idx].valor; 
+            return;
+
+        } else {
+            mapas[idx].bloco = ".";
+            mapas[idx + 1].bloco = "@";
+            idx = idx + 1;
+            ValidacaoMovimento = true; 
+            return;
+        }
+    }
+
+    do{
+        if(BlocoEspecial == "✚" || BlocoEspecial == "⛏"){
+            cout << "\n Deseja coletar o item? \n";
+            cout << "1 - Sim";
+            cout << "2 - Não";
+            cin >> escolha;
+
+            if(escolha == 1){
+                if (player.inventario.size() < 3){
+                    if(BlocoEspecial == "✚"){
+                        Item novo = CriarPocao();
+                        player.inventario.push_back(novo);
+                        cout << "\nPoção de cura adicionado ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    } else {
+                        Item novo = CriarBroca();
+                        player.inventario.push_back(novo);
+                        cout << "\nBroca adicionada ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    }
+                } else {
+                    cout << "\nInventário cheio!\n";
+                    ValidacaoMovimento = false;
+                    return;
+                }
+            }
+            if(escolha == 2){
+                ValidacaoMovimento = false;
+                return;
+            }
+            if(escolha < 1 || escolha > 2){
+                cout << "\nOpção inválida, tente novamente!\n";
+            }
+        } 
+    } while(escolha < 1 || escolha > 2);
+
+}
+
+void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player){
+    bool ValidacaoMovimento = false, ConcluiuMapa = false; 
+    char movimento;
+    string BlocoEspecial = "nulo";
+    int idx, escolha = 0;
+    vector<Item> inventario;
+
+
+    if(movimento == 'a' || movimento == 'A'){
+        if(idx % largura == 0){
+            cout << "Movimento inválido, tente novamente!\n";
+            ValidacaoMovimento = false;
+            return;
+        }
+
+        if(mapas[idx - 1].bloco == "|"){
+            ValidacaoMovimento = false;
+            cout << "\nMovimento inválido, tente novamente! \n";
+
+        } else if(BlocoEspecial != "nulo"){
+            if(BlocoEspecial == "✚"){
+                mapas[idx].bloco = "✚"; 
+                if(mapas[idx - 1].bloco == "$"){
+                    idx = idx - 1;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx - 1].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx - 1;
+                    return;
+                }
+            } else {
+                mapas[idx].bloco = " ⛏";
+                if(mapas[idx - 1].bloco == "$"){
+                    idx = idx - 1;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx - 1].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx - 1;
+                    return; 
+                }
+            }
+
+        } else if(mapas[idx - 1].bloco == "✚" || mapas[idx - 1].bloco == " ⛏"){
+            BlocoEspecial = mapas[idx - 1].bloco;
+            mapas[idx].bloco = ".";
+            mapas[idx - 1].bloco = "@";
+            idx = idx - 1; 
+            ValidacaoMovimento = true; 
+            //Nota: Não colcoar return, se verdadeiro, vai cair na função de baixo
+
+        } else if (mapas[idx - 1].bloco == "$"){
+            mapas[idx].bloco = ".";
+            idx = idx - 1;
+            mapas[idx].bloco = "@";                
+            player.dinheiro += mapas[idx].valor; 
+            return;
+
+        } else {
+            mapas[idx].bloco = ".";
+            mapas[idx - 1].bloco = "@";
+            idx = idx - 1;
+            ValidacaoMovimento = true; 
+            return;
+        }
+    }
+
+    do{
+        if(BlocoEspecial == "✚" || BlocoEspecial == "⛏"){
+            cout << "\n Deseja coletar o item? \n";
+            cout << "1 - Sim";
+            cout << "2 - Não";
+            cin >> escolha;
+
+            if(escolha == 1){
+                if (player.inventario.size() < 3){
+                    if(BlocoEspecial == "✚"){
+                        Item novo = CriarPocao();
+                        player.inventario.push_back(novo);
+                        cout << "\nPoção de cura adicionado ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    } else {
+                        Item novo = CriarBroca();
+                        player.inventario.push_back(novo);
+                        cout << "\nBroca adicionada ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    }
+                } else {
+                    cout << "\nInventário cheio!\n";
+                    ValidacaoMovimento = false;
+                    return;
+                }
+            }
+            if(escolha == 2){
+                ValidacaoMovimento = false;
+                return;
+            }
+            if(escolha < 1 || escolha > 2){
+                cout << "\nOpção inválida, tente novamente!\n";
+            }
+        } 
+    } while(escolha < 1 || escolha > 2);
+}
+
+void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player){
+    bool ValidacaoMovimento = false, ConcluiuMapa = false; 
+    char movimento;
+    string BlocoEspecial = "nulo";
+    int idx, escolha = 0;
+    vector<Item> inventario;
+
+
+    if(movimento == 'w' || movimento == 'W'){
+        if(0 <= idx >=19){
+            cout << "Movimento inválido, tente novamente!\n";
+            ValidacaoMovimento = false;
+            return;
+        }
+
+        if(mapas[idx - 20].bloco == "|"){
+            ValidacaoMovimento = false;
+            cout << "\nMovimento inválido, tente novamente! \n";
+
+        } else if(BlocoEspecial != "nulo"){
+            if(BlocoEspecial == "✚"){
+                mapas[idx].bloco = "✚"; 
+                if(mapas[idx - 20].bloco == "$"){
+                    idx = idx - 20;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx - 20].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx - 20;
+                    return;
+                }
+            } else {
+                mapas[idx].bloco = " ⛏";
+                if(mapas[idx - 20].bloco == "$"){
+                    idx = idx - 20;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx - 20].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx - 1;
+                    return; 
+                }
+            }
+
+        } else if(mapas[idx - 20].bloco == "✚" || mapas[idx - 20].bloco == " ⛏"){
+            BlocoEspecial = mapas[idx - 20].bloco;
+            mapas[idx].bloco = ".";
+            mapas[idx - 20].bloco = "@";
+            idx = idx - 20; 
+            ValidacaoMovimento = true; 
+            //Nota: Não colcoar return, se verdadeiro, vai cair na função de baixo
+
+        } else if (mapas[idx - 20].bloco == "$"){
+            mapas[idx].bloco = ".";
+            idx = idx - 20;
+            mapas[idx].bloco = "@";                
+            player.dinheiro += mapas[idx].valor; 
+            return;
+
+        } else {
+            mapas[idx].bloco = ".";
+            mapas[idx - 20].bloco = "@";
+            idx = idx - 20;
+            ValidacaoMovimento = true; 
+            return;
+        }
+    }
+
+    do{
+        if(BlocoEspecial == "✚" || BlocoEspecial == " ⛏"){
+            cout << "\n Deseja coletar o item? \n";
+            cout << "1 - Sim";
+            cout << "2 - Não";
+            cin >> escolha;
+
+            if(escolha == 1){
+                if (player.inventario.size() < 3){
+                    if(BlocoEspecial == "✚"){
+                        Item novo = CriarPocao();
+                        player.inventario.push_back(novo);
+                        cout << "\nPoção de cura adicionado ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    } else {
+                        Item novo = CriarBroca();
+                        player.inventario.push_back(novo);
+                        cout << "\nBroca adicionada ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    }
+                } else {
+                    cout << "\nInventário cheio!\n";
+                    ValidacaoMovimento = false;
+                    return;
+                }
+            }
+            if(escolha == 2){
+                ValidacaoMovimento = false;
+                return;
+            }
+            if(escolha < 1 || escolha > 2){
+                cout << "\nOpção inválida, tente novamente!\n";
+            }
+        } 
+    } while(escolha < 1 || escolha > 2);
+}
+
+void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player){
+    bool ValidacaoMovimento = false, ConcluiuMapa = false; 
+    char movimento;
+    string BlocoEspecial = "nulo";
+    int idx, escolha = 0;
+    vector<Item> inventario;
+
+
+    if(movimento == 's' || movimento == 'S'){
+
+        if(mapas[idx - 20].bloco == "|" || idx + 20 > mapas.size()){
+            ValidacaoMovimento = false;
+            cout << "\nMovimento inválido, tente novamente! \n";
+            return;
+        } else if(mapas[idx - 20].bloco == "Q"){
+            ConcluiuMapa = true;
+            ValidacaoMovimento = true;
+            return;
+        } else if(BlocoEspecial != "nulo"){
+            if(BlocoEspecial == "✚"){
+                mapas[idx].bloco = "✚"; 
+                if(mapas[idx + 20].bloco == "$"){
+                    idx = idx + 20;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx + 20].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx + 20;
+                    return;
+                }
+            } else {
+                mapas[idx].bloco = " ⛏";
+                if(mapas[idx + 20].bloco == "$"){
+                    idx = idx + 20;
+                    player.dinheiro += mapas[idx].valor; 
+                    mapas[idx].bloco = "@";
+                    ValidacaoMovimento = true;
+                    BlocoEspecial = "nulo";
+                    return;
+                } else {
+                    mapas[idx + 20].bloco = "@";
+                    BlocoEspecial = "nulo";
+                    ValidacaoMovimento = true;
+                    idx = idx + 1;
+                    return; 
+                }
+            }
+
+        } else if(mapas[idx + 20].bloco == "✚" || mapas[idx + 20].bloco == " ⛏"){
+            BlocoEspecial = mapas[idx + 20].bloco;
+            mapas[idx].bloco = ".";
+            mapas[idx + 20].bloco = "@";
+            idx = idx + 20; 
+            ValidacaoMovimento = true; 
+            //Nota: Não colcoar return, se verdadeiro, vai cair na função de baixo
+
+        } else if (mapas[idx + 20].bloco == "$"){
+            mapas[idx].bloco = ".";
+            idx = idx + 20;
+            mapas[idx].bloco = "@";                
+            player.dinheiro += mapas[idx].valor; 
+            return;
+
+        } else {
+            mapas[idx].bloco = ".";
+            mapas[idx + 20].bloco = "@";
+            idx = idx + 20;
+            ValidacaoMovimento = true; 
+            return;
+        }
+    }
+
+    do{
+        if(BlocoEspecial == "✚" || BlocoEspecial == " ⛏"){
+            cout << "\n Deseja coletar o item? \n";
+            cout << "1 - Sim";
+            cout << "2 - Não";
+            cin >> escolha;
+
+            if(escolha == 1){
+                if (player.inventario.size() < 3){
+                    if(BlocoEspecial == "✚"){
+                        Item novo = CriarPocao();
+                        player.inventario.push_back(novo);
+                        cout << "\nPoção de cura adicionado ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    } else {
+                        Item novo = CriarBroca();
+                        player.inventario.push_back(novo);
+                        cout << "\nBroca adicionada ao inventário!\n";
+                        ValidacaoMovimento = false;
+                        BlocoEspecial = "nulo";
+                        return;
+                    }
+                } else {
+                    cout << "\nInventário cheio!\n";
+                    ValidacaoMovimento = false;
+                    return;
+                }
+            }
+            if(escolha == 2){
+                ValidacaoMovimento = false;
+                return;
+            }
+            if(escolha < 1 || escolha > 2){
+                cout << "\nOpção inválida, tente novamente!\n";
+            }
+        } 
+    } while(escolha < 1 || escolha > 2); 
+}
