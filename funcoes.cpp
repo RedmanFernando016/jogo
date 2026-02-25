@@ -64,12 +64,11 @@ void Criador(std::vector<Mapa> &mapas){
 //pos dinheiro ($)
     for(int i = 0; i < mapas.size(); i++){
         a = rand() % 10;
-        int $;
 
         if(mapas[i].bloco == "."){
             x = rand() % 18;
             if(x < 1){
-                mapas[i].bloco = '$';
+                mapas[i].bloco = "$";
                 mapas[i].valor = a;
             }
         }
@@ -111,7 +110,7 @@ void Criador(std::vector<Mapa> &mapas){
             for(int i = 0; i < mapas.size(); i++){
                 if(i == a){
                     if(mapas[i].bloco == "." && mapas[i].bloco != "✚"){
-                        mapas[i].bloco = '+';
+                        mapas[i].bloco = "✚";
                         count++;
                     }
                 }

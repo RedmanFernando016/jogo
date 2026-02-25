@@ -38,15 +38,16 @@ struct Monstro{
     
 };
 
-void MovimentoJogador(std::vector<Mapa> &mapas, std::vector<Item> &inventario, struct Jogador &player);
+void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player);
 void MovimentoMonstro(std::vector<Mapa> &mapas);
 void PegarItem(std::vector<Item> &inventario, const Item &item);
-void AbrirInventario(std::vector<Item> &inventario);
+void AbrirInventario(Jogador &player);
 void LargarItem(std::vector<Item> &inventario, const Item &item);
-void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player);
-void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player);
-void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player);
-void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player);
+
+void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
+void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
+void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
+void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
 
 Item CriarPocao(), CriarBroca();
 

@@ -12,8 +12,11 @@ int main(){
     srand((unsigned) time(nullptr));
 
     vector<Mapa> mapas(200);
+    vector<Item> inventario;
+    Jogador player;
 
     Criador(mapas);
     Imprimir(mapas);
+    MovimentoJogador(mapas, inventario, player);
     return 0;
 }
