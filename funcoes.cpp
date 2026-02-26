@@ -45,14 +45,14 @@ void Criador(std::vector<Mapa> &mapas){
             }
         }
 // VERIFICAR AQUI
-        for(int i = 1; i < mapas.size() - 1; i++){ 
+        for(int i = 1; i < mapas.size() - 1; i++){
             if(i > mapas.size() || i < 0){
 
             } else{
-                if(mapas[i].bloco == "|" && mapas[i + 1].bloco == "|" && mapas[i - 1].bloco == "|"){ 
+                if(mapas[i].bloco == "|" && mapas[i + 1].bloco == "|" && mapas[i - 1].bloco == "|"){
                     VerificacaoMapa = false; 
                     mapas[i].bloco = "#";  
-                } 
+                }
             }
         } 
 

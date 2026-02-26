@@ -2,12 +2,13 @@
 #define HEAD_H
 #include <vector> 
 #include <windows.h>
+#include <iostream>
 using namespace std;
 
 // Funções do mapa
 
 struct Mapa{
-    string bloco; 
+    string bloco, blocoAlternativo; 
     int valor;
 };
 
@@ -40,14 +41,14 @@ struct Monstro{
 
 void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player);
 void MovimentoMonstro(std::vector<Mapa> &mapas);
-void PegarItem(std::vector<Item> &inventario, const Item &item);
 void AbrirInventario(Jogador &player);
-void LargarItem(std::vector<Item> &inventario, const Item &item);
+void AdicionarItem(Jogador &player, const Item &novo);
+void LargarItem(Jogador &player, const Item &item);
 
-void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
-void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
-void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
-void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial);
+void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
+void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
+void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
+void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
 
 Item CriarPocao(), CriarBroca();
 

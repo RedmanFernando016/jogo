@@ -14,9 +14,18 @@ int main(){
     vector<Mapa> mapas(200);
     vector<Item> inventario;
     Jogador player;
+    bool Terminar = false, Vitoria = false;
+    int count = 0; 
 
-    Criador(mapas);
-    Imprimir(mapas);
-    MovimentoJogador(mapas, inventario, player);
+    do{
+        Criador(mapas);
+
+        do{
+            Imprimir(mapas);
+            MovimentoJogador(mapas, player);
+        } while(Terminar == false);
+
+    } while(Vitoria == false);
+
     return 0;
 }
