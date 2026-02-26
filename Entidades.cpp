@@ -306,7 +306,7 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
                 }
             }
             if(escolha == 2){
-                ValidacaoMovimento = false;
+                ValidacaoMovimento = true;
                 return;
             }
             if(escolha < 1 || escolha > 2){
@@ -416,7 +416,7 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
                 }
             }
             if(escolha == 2){
-                ValidacaoMovimento = false;
+                ValidacaoMovimento = true;
                 return;
             }
             if(escolha < 1 || escolha > 2){
@@ -524,7 +524,7 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
                 }
             }
             if(escolha == 2){
-                ValidacaoMovimento = false;
+                ValidacaoMovimento = true;
                 return;
             }
             if(escolha < 1 || escolha > 2){
