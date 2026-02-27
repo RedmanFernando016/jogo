@@ -41,9 +41,9 @@ struct Monstro{
 
 void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player);
 void MovimentoMonstro(std::vector<Mapa> &mapas);
-void AbrirInventario(Jogador &player);
+void AbrirInventario(std::vector<Mapa> &mapas, Jogador &player, int &idx);
 void AdicionarItem(Jogador &player, const Item &novo);
-void LargarItem(Jogador &player, const Item &item);
+void LargarItem(std::vector<Mapa> &mapas, Jogador &player, const Item &item, int &idx);
 
 void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
 void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
