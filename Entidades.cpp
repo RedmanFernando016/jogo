@@ -152,7 +152,7 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
     
     if(idx % largura == largura - 1){
         cout << "Movimento inválido, tente novamente!\n";
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         return;
     }
 
@@ -270,7 +270,7 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
 
     if(idx % largura == 0){
         cout << "Movimento inválido, tente novamente!\n";
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         return;
     }
 
@@ -381,7 +381,7 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
 
     if(idx < largura){
         cout << "Movimento inválido, tente novamente!\n";
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         return;
     }
 
