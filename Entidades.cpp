@@ -5,7 +5,7 @@ using namespace std;
 string BlocoEspecial = "nulo";
 const int largura = 20;
 
-void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player){
+void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario){
     bool ValidacaoMovimento = false, ConcluiuMapa = false; 
     char movimento;
     int idx, escolha = 0;
@@ -30,33 +30,48 @@ void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player){
         } else if (movimento == 's' || movimento == 'S'){
             AndarBaixo(mapas, player, idx, BlocoEspecial, ValidacaoMovimento);
         } else if (movimento == 'c' || movimento == 'C'){
-            AbrirInventario(player); 
+            AbrirInventario(player, inventario, ValidacaoMovimento); 
         } 
 
 
     } while (ValidacaoMovimento == false);
 }
 
-void AbrirInventario(Jogador &player){
+void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &ValidacaoMovimento){
+    char input;
 
-    cout << " ┌──────────────────────┐\n";
-    cout << " |                      |\n";
-    cout << " |      INVENTÁRIO      |\n";
-    cout << " |______________________|\n";
-    cout << " |        Itens         |\n";
-    cout << " |                      |\n";
+    do{
+        cout << " ┌──────────────────────┐\n";
+        cout << " |                      |\n";
+        cout << " |      INVENTÁRIO      |\n";
+        cout << " |______________________|\n";
+        cout << " |        Itens         |\n";
+        cout << " |                      |\n";
 
-    for(int i = 0; i < 3; i++){
-        if(player.inventario[i].img == "⛏"){
-            cout << " | [⛏] - Picareta       |\n"; 
-        } else if (player.inventario[i].img == "✚"){
-            cout << " | [✚] - Poção de cura  |\n";
-        } else {
-            cout << " | [ ] - ...            |\n";
+        for(int i = 0; i < 3; i++){
+            if(player.inventario[i].img == "⛏"){
+                cout << " | [⛏] - Picareta       |\n"; 
+            } else if (player.inventario[i].img == "✚"){
+                cout << " | [✚] - Poção de cura  |\n";
+            } else {
+                cout << " | [ ] - ...            |\n";
+            }
         }
-    }
-    cout << " |                      |\n";
-    cout << " └──────────────────────┘\n";
+        cout << " |                      |\n";
+        cout << " └──────────────────────┘\n";
+
+        cout << "\n[F] - Largar item\n";
+        cout << "[Q] - Fechar inventario\n";
+        cin >> input;
+
+        if(input == 'F' || input == 'f'){
+            LargarItem(player, inventario);
+        }
+
+    } while(input != 'q');
+
+    ValidacaoMovimento = true;
+    return;
 }
 
 void AdicionarItem(Jogador &player, const Item &novo){
@@ -70,8 +85,47 @@ void AdicionarItem(Jogador &player, const Item &novo){
     return;
 }
 
-void LargarItem(Jogador &player){
+void LargarItem(Jogador &player, std::vector<Item> &inventario){
+    int escolha;
+    int idxSlot = escolha - 1;
+    cout << "Escolha qual item deseja largar!\n";
+    cin >> escolha; 
 
+    if(escolha < 1 || escolha > 3){
+            cout << "Slot inválido!\n";
+            return;
+        } 
+
+    if(player.inventario[idxSlot].nome == ""){
+        cout << "Esse slot já está vazio!\n";
+        return;
+    }
+
+    if(escolha >= 1 && escolha <= 3){
+        for(int i = 0; i < 3; i++){
+            if(i == escolha){
+                player.inventario[idxSlot].nome = "";
+                player.inventario[idxSlot].img = "";
+                ReorganizarItens(player);
+                return;
+            }
+        }
+        cout << "\nSem itens no inventario!\n";
+        return;
+    }
+}
+
+void ReorganizarItens(Jogador &player){
+    vector<Item> novo(3);
+    int k = 0;
+
+    for(int i = 0; i < 3; i++){
+        if(player.inventario[i].nome != ""){
+            novo[k++] = player.inventario[i];
+        }
+    }
+
+    player.inventario = novo;
 }
 
 Item CriarPocao(){
@@ -103,8 +157,9 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
     }
 
     if(mapas[idx + 1].bloco == "|"){
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         cout << "\nMovimento inválido, tente novamente! \n";
+        return;
 
     } else if(mapas[idx + 1].bloco == "Q"){
         ConcluiuMapa = true;
@@ -220,8 +275,9 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
     }
 
     if(mapas[idx - 1].bloco == "|"){
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         cout << "\nMovimento inválido, tente novamente! \n";
+        return;
 
     } else if(BlocoEspecial != "nulo"){
         if(BlocoEspecial == "✚"){
@@ -330,8 +386,9 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
     }
 
     if(mapas[idx - 20].bloco == "|"){
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         cout << "\nMovimento inválido, tente novamente! \n";
+        return;
 
     } else if(BlocoEspecial != "nulo"){
         if(BlocoEspecial == "✚"){
@@ -433,7 +490,7 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
     vector<Item> inventario;
 
     if(mapas[idx + 20].bloco == "|" || idx + largura >= mapas.size()){
-        ValidacaoMovimento = false;
+        ValidacaoMovimento = true;
         cout << "\nMovimento inválido, tente novamente! \n";
         return;
     } else if(mapas[idx + 20].bloco == "Q"){

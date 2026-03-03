@@ -39,16 +39,23 @@ struct Monstro{
     
 };
 
-void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player);
-void MovimentoMonstro(std::vector<Mapa> &mapas);
-void AbrirInventario(Jogador &player);
-void AdicionarItem(Jogador &player, const Item &novo);
-void LargarItem(Jogador &player, const Item &item);
-
+//Mesmo bloco
+void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario);
 void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
 void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
 void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
 void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
+//;
+
+//Mesmo bloco
+void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &ValidacaoMovimento);
+void AdicionarItem(Jogador &player, const Item &novo);
+void LargarItem(Jogador &player, std::vector<Item> &inventari);
+void ReorganizarItens(Jogador &player);
+//;
+
+void MovimentoMonstro(std::vector<Mapa> &mapas);
+
 
 Item CriarPocao(), CriarBroca();
 

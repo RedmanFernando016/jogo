@@ -22,7 +22,7 @@ int main(){
 
         do{
             Imprimir(mapas);
-            MovimentoJogador(mapas, player);
+            MovimentoJogador(mapas, player, inventario);
         } while(Terminar == false);
 
     } while(Vitoria == false);
