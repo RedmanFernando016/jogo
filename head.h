@@ -54,6 +54,8 @@ void LargarItem(Jogador &player, std::vector<Item> &inventari);
 void ReorganizarItens(Jogador &player);
 //;
 
+bool QuebrarParede(Jogador &player, std::vector<Item> &inventario, std::vector<Mapa> &mapas, char &movimento);
+
 void MovimentoMonstro(std::vector<Mapa> &mapas);
 
 
