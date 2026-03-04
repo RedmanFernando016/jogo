@@ -8,22 +8,23 @@ int main(){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    bool ValidacaoMovimento = false, ConcluiuMapa = false; 
+    bool ValidacaoMovimento = false; 
     srand((unsigned) time(nullptr));
 
     vector<Mapa> mapas(200);
     vector<Item> inventario;
     Jogador player;
-    bool Terminar = false, Vitoria = false;
+    bool Vitoria = false;
     int count = 0; 
 
     do{
+        bool ConcluiuMapa = false;
         Criador(mapas);
 
         do{
             Imprimir(mapas);
-            MovimentoJogador(mapas, player, inventario);
-        } while(Terminar == false);
+            MovimentoJogador(mapas, player, inventario, ConcluiuMapa);
+        } while(ConcluiuMapa == false);
 
     } while(Vitoria == false);
 
