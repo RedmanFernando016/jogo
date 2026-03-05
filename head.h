@@ -8,15 +8,14 @@ using namespace std;
 // Funções do mapa
 
 struct Mapa{
-    string bloco, blocoAlternativo; 
+    string bloco, blocoAlternativo;
     int valor;
 };
 
-void Criador(std::vector<Mapa> &mapas); 
+void Criador(std::vector<Mapa> &mapas);
 void Imprimir(std::vector<Mapa> &mapas);
 void CaminhoGarantido(std::vector<Mapa> &mapas);
 void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino);
-
 
 //Funções das entidades
 
@@ -42,14 +41,14 @@ struct Monstro{
 //Mesmo bloco
 void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa);
 void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento, char &movimento, bool &ConcluiuMapa);
-void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
-void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
-void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento);
+void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento);
+void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento);
+void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento, bool &ConcluiuMapa);
 //;
 
 //Mesmo bloco
 void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &ValidacaoMovimento, std::vector<Mapa> &mapas);
-void AdicionarItem(Jogador &player, const Item &novo);
+bool AdicionarItem(Jogador &player, const Item &novo);
 void LargarItem(Jogador &player, std::vector<Item> &inventari, std::vector<Mapa> &mapas);
 void ReorganizarItens(Jogador &player);
 //;

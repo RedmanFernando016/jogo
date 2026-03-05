@@ -19,7 +19,9 @@ int main(){
 
     do{
         bool ConcluiuMapa = false;
+        cout << "\n[DEBUG] Gerando mapa...\n";
         Criador(mapas);
+        cout << "[DEBUG] Mapa gerado!\n";
 
         do{
             Imprimir(mapas);

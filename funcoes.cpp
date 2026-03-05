@@ -29,35 +29,27 @@ void Criador(std::vector<Mapa> &mapas){
     mapas[0].bloco = "@"; 
     mapas[199].bloco = "Q";
 
-    do{ 
-        VerificacaoMapa = true;
-        
-        for(int i = 1; i < mapas.size() - 1; i++){
-            if(mapas[i].bloco == "#"){
-                a = rand();
 
-                if(a % 2 == 0){
-                    mapas[i + 1].bloco = "."; 
-                } else {
-                    mapas[i - 1].bloco = ".";
-                }
-                mapas[i].bloco = "|";
+    VerificacaoMapa = true;
+    
+    for(int i = 1; i < mapas.size() - 1; i++){
+        if(mapas[i].bloco == "#"){
+            a = rand();
+
+            if(a % 2 == 0){
+                mapas[i + 1].bloco = "."; 
+            } else {
+                mapas[i - 1].bloco = ".";
             }
+            mapas[i].bloco = "|";
         }
-// VERIFICAR AQUI
-        for(int i = 1; i < mapas.size() - 1; i++){
-            if(i > mapas.size() || i < 0){
+    }
 
-            } else{
-                if(mapas[i].bloco == "|" && mapas[i + 1].bloco == "|" && mapas[i - 1].bloco == "|"){
-                    VerificacaoMapa = false; 
-                    mapas[i].bloco = "#";  
-                }
-            }
-        } 
-
-        
-    } while (VerificacaoMapa == false);
+    for(int i = 1; i < (int)mapas.size() - 1; i++){
+        if(mapas[i].bloco == "|" && mapas[i-1].bloco == "|" && mapas[i+1].bloco == "|"){
+            mapas[i].bloco = ".";
+        }
+    }
 
     CaminhoGarantido(mapas);
 
@@ -97,26 +89,19 @@ void Criador(std::vector<Mapa> &mapas){
     
 //pos. cura (+) - 33%
 
-    a = rand() % 3 + 1;
-    VerificacaoCasa = false;
+    if(rand() % 3 == 0){
+        int qtd = rand() % 3;
+        int colocadas = 0;
 
-    if(a == 1){
-        x = 0;
-        x = rand() % 3;
-        cout << "\nqtds cura: " << x;
-        do{
-            a = rand() % 199;
-
-            for(int i = 0; i < mapas.size(); i++){
-                if(i == a){
-                    if(mapas[i].bloco == "." && mapas[i].bloco != "✚"){
-                        mapas[i].bloco = "✚";
-                        count++;
-                    }
-                }
+        for(int tent = 0; tent < 5000 && colocadas < qtd; tent++){
+            int pos = rand() % 199;
+            
+            if(mapas[pos].bloco == "."){
+                mapas[pos].bloco = "✚";
+                colocadas++;
             }
-        } while(count != x);
-    } count = 0;
+        }
+    }
 }
 
 void CaminhoGarantido(std::vector<Mapa> &mapas){
