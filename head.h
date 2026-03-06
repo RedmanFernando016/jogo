@@ -12,7 +12,7 @@ struct Mapa{
     int valor;
 };
 
-void Criador(std::vector<Mapa> &mapas);
+void Criador(std::vector<Mapa> &mapas, int &qtde);
 void Imprimir(std::vector<Mapa> &mapas);
 void CaminhoGarantido(std::vector<Mapa> &mapas);
 void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino);
@@ -39,7 +39,7 @@ struct Monstro{
 };
 
 //Mesmo bloco
-void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa);
+void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa, int &qtde);
 void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento, char &movimento, bool &ConcluiuMapa);
 void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento);
 void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento);
@@ -55,7 +55,7 @@ void ReorganizarItens(Jogador &player);
 
 bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::vector<Mapa> &mapas, char &movimento);
 
-void MovimentoMonstro(std::vector<Mapa> &mapas);
+void MovimentoMonstro(std::vector<Mapa> &mapas, int &qtde);
 
 
 Item CriarPocao(), CriarBroca();

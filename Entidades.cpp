@@ -6,7 +6,7 @@ using namespace std;
 string BlocoEspecial = "nulo";
 const int largura = 20;
 
-void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa){
+void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa, int &qtde){
     bool ValidacaoMovimento = false, quebrou = false;; 
     char movimento;
     int idx = -1, escolha = 0;
@@ -41,6 +41,9 @@ void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<I
             ValidacaoMovimento = quebrou;
         }
 
+        MovimentoMonstro(mapas, qtde);
+        
+
     } while (!ValidacaoMovimento);
     return;
 }
@@ -64,8 +67,17 @@ void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &Valid
             } else {
                 cout << " | [ ] - ...            |\n";
             }
-        }
+        } 
         cout << " |                      |\n";
+        if(player.dinheiro < 9){
+            cout << " |R$:" << player.dinheiro << "                  |\n";
+        } else if(player.dinheiro >= 10 && player.dinheiro <= 99) {
+            cout << " |R$:" << player.dinheiro << "                 |\n";
+        } else if(player.dinheiro > 99 && player.dinheiro <= 999){
+            cout << " |R$:" << player.dinheiro << "                |\n";
+        } else {
+            cout << " |R$:" << player.dinheiro << "               |\n";
+        }
         cout << " └──────────────────────┘\n";
 
         cout << "\n[F] - Largar item\n";
@@ -747,5 +759,90 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
             cout << "\nOpção inválida, tente novamente!\n";
         }
 
-    } while(escolha < 1 && escolha > 2); 
+    } while(escolha < 1 && escolha > 2);
+}
+
+void MovimentoMonstro(std::vector<Mapa> &mapas, int &qtde){
+    int count = 0, m = 0;
+    bool ValidacaoDirecao = false;
+
+    for(int i = 0; i < mapas.size(); i++){
+        if(mapas[i].bloco == "8"){
+            int direcao = 0;
+
+//Nota direções: 0 = D - sub E // 1 = A - sub Q // 2 = W - Z // 3 = S - sub C;
+
+            do{
+                direcao = rand() % 3;
+
+                if(direcao = 0){
+
+                    if(mapas[i + 1].bloco != "."){
+                        if(mapas[i - 19].bloco != "." || i - 19 < mapas.size()){
+                            ValidacaoDirecao = false;
+                        } else {
+                            mapas[i].bloco = ".";
+                            mapas[i - 19].bloco = "8";
+                            ValidacaoDirecao = true;
+                        }
+                    } else {
+                        mapas[i].bloco = ".";
+                        mapas[i + 1].bloco = "8";
+                        ValidacaoDirecao = true;
+                    }
+
+                } else if(direcao = 1){
+                    
+                    if(mapas[i - 1].bloco != "."){
+                        if(mapas[i - 21].bloco != "." || i - 21 < mapas.size()){
+                            ValidacaoDirecao = false;
+                        } else{
+                            mapas[i].bloco = ".";
+                            mapas[i - 21].bloco = "8";
+                            ValidacaoDirecao = true; 
+                        }
+                    } else {
+                        mapas[i].bloco = ".";
+                        mapas[i - 1].bloco = "8";
+                        ValidacaoDirecao = true; 
+                    }
+
+                } else if(direcao = 2){
+
+                    if(mapas[i - 20].bloco != "."){
+                        if(mapas[i + 19].bloco != "." || i + 19 < mapas.size()){
+                            ValidacaoDirecao = false;
+                        } else{
+                            mapas[i].bloco = ".";
+                            mapas[i + 19].bloco = "8";
+                            ValidacaoDirecao = true; 
+                        }
+                    } else {
+                        mapas[i].bloco = ".";
+                        mapas[i - 20].bloco = "8";
+                        ValidacaoDirecao = true; 
+                    }
+
+                } else {
+
+                    if(mapas[i + 20].bloco != "."){
+                        if(mapas[i + 21].bloco != "." || i + 21 < mapas.size()){
+                            ValidacaoDirecao = false;
+                        } else{
+                            mapas[i].bloco = ".";
+                            mapas[i + 21].bloco = "8";
+                            ValidacaoDirecao = true; 
+                        }
+                    } else {
+                        mapas[i].bloco = ".";
+                        mapas[i + 20].bloco = "8";
+                        ValidacaoDirecao = true; 
+                    }
+
+                }
+
+            } while(ValidacaoDirecao == false);
+        }     
+    }
+    return;
 }

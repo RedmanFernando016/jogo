@@ -15,17 +15,17 @@ int main(){
     vector<Item> inventario;
     Jogador player;
     bool Vitoria = false;
-    int count = 0; 
+    int count = 0, qtde = 0; 
 
     do{
         bool ConcluiuMapa = false;
         cout << "\n[DEBUG] Gerando mapa...\n";
-        Criador(mapas);
+        Criador(mapas, qtde);
         cout << "[DEBUG] Mapa gerado!\n";
 
         do{
             Imprimir(mapas);
-            MovimentoJogador(mapas, player, inventario, ConcluiuMapa);
+            MovimentoJogador(mapas, player, inventario, ConcluiuMapa, qtde);
         } while(ConcluiuMapa == false);
 
     } while(Vitoria == false);

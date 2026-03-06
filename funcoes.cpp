@@ -8,7 +8,7 @@ using namespace std;
 
 const int largura = 20;
 
-void Criador(std::vector<Mapa> &mapas){
+void Criador(std::vector<Mapa> &mapas, int &qtde){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     mapas.resize(200);
@@ -101,6 +101,36 @@ void Criador(std::vector<Mapa> &mapas){
                 colocadas++;
             }
         }
+    }
+
+//pos monstro
+    bool ValiMonstro = false;
+
+    a = 0;
+    a = rand() % 4;
+
+    if(a < 3){
+        int qtde = 0, count = 0, PosMonstro = 0, tent = 0;
+        qtde = rand() % 2 + 1;
+
+        do{
+            PosMonstro = rand() % 199;
+            for(int i = 0; i < mapas.size(); i++){
+                if(i == PosMonstro && mapas[i].bloco == "."){
+                    mapas[i].bloco = "8";
+                    count++;
+                }
+            }
+            if(count == qtde){
+                ValiMonstro = true;
+            }
+
+            if(tent > 5000){
+                break;
+            }
+
+            tent++;
+        } while (ValiMonstro == false);
     }
 }
 
