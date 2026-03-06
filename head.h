@@ -55,6 +55,7 @@ void ReorganizarItens(Jogador &player);
 
 bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::vector<Mapa> &mapas, char &movimento);
 
+void Combate();
 void MovimentoMonstro(std::vector<Mapa> &mapas, int &qtde);
 
 

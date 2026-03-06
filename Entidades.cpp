@@ -763,86 +763,103 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
 }
 
 void MovimentoMonstro(std::vector<Mapa> &mapas, int &qtde){
-    int count = 0, m = 0;
-    bool ValidacaoDirecao = false;
+    vector<int> PosMonstro;
+    int a;
 
     for(int i = 0; i < mapas.size(); i++){
         if(mapas[i].bloco == "8"){
-            int direcao = 0;
+            PosMonstro.push_back(i);
+        }
+    }
 
-//Nota direções: 0 = D - sub E // 1 = A - sub Q // 2 = W - Z // 3 = S - sub C;
+    for(int k = 0; k < PosMonstro.size(); k++){
+        int i = PosMonstro[i];
 
-            do{
-                direcao = rand() % 3;
+        if(mapas[i].bloco != "8"){
+            continue;
+        }
 
-                if(direcao = 0){
+        int tent = 0;
+        bool ValidacaoDirecao = false;
 
-                    if(mapas[i + 1].bloco != "."){
-                        if(mapas[i - 19].bloco != "." || i - 19 < mapas.size()){
-                            ValidacaoDirecao = false;
-                        } else {
-                            mapas[i].bloco = ".";
-                            mapas[i - 19].bloco = "8";
-                            ValidacaoDirecao = true;
-                        }
-                    } else {
-                        mapas[i].bloco = ".";
-                        mapas[i + 1].bloco = "8";
-                        ValidacaoDirecao = true;
-                    }
+        do{
+            int direcao = rand() % 4;
 
-                } else if(direcao = 1){
-                    
-                    if(mapas[i - 1].bloco != "."){
-                        if(mapas[i - 21].bloco != "." || i - 21 < mapas.size()){
-                            ValidacaoDirecao = false;
-                        } else{
-                            mapas[i].bloco = ".";
-                            mapas[i - 21].bloco = "8";
-                            ValidacaoDirecao = true; 
-                        }
-                    } else {
-                        mapas[i].bloco = ".";
-                        mapas[i - 1].bloco = "8";
-                        ValidacaoDirecao = true; 
-                    }
+            // 0 = direita | diagonal: cima-direita (-19)
+            if(direcao == 0){
 
-                } else if(direcao = 2){
-
-                    if(mapas[i - 20].bloco != "."){
-                        if(mapas[i + 19].bloco != "." || i + 19 < mapas.size()){
-                            ValidacaoDirecao = false;
-                        } else{
-                            mapas[i].bloco = ".";
-                            mapas[i + 19].bloco = "8";
-                            ValidacaoDirecao = true; 
-                        }
-                    } else {
-                        mapas[i].bloco = ".";
-                        mapas[i - 20].bloco = "8";
-                        ValidacaoDirecao = true; 
-                    }
-
-                } else {
-
-                    if(mapas[i + 20].bloco != "."){
-                        if(mapas[i + 21].bloco != "." || i + 21 < mapas.size()){
-                            ValidacaoDirecao = false;
-                        } else{
-                            mapas[i].bloco = ".";
-                            mapas[i + 21].bloco = "8";
-                            ValidacaoDirecao = true; 
-                        }
-                    } else {
-                        mapas[i].bloco = ".";
-                        mapas[i + 20].bloco = "8";
-                        ValidacaoDirecao = true; 
-                    }
-
+                if(i % largura != largura - 1 && i + 1 < (int)mapas.size() && mapas[i + 1].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i + 1].bloco = "8";
+                    ValidacaoDirecao = true;
                 }
 
-            } while(ValidacaoDirecao == false);
-        }     
+                else if(i >= largura && i % largura != largura - 1 && i - 19 >= 0 && mapas[i - 19].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i - 19].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+                else{
+                    tent++;
+                }
+            }
+
+            // 1 = esquerda | diagonal: cima-esquerda (-21)
+            else if(direcao == 1){
+
+                if(i % largura != 0 && i - 1 >= 0 && mapas[i - 1].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i - 1].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+
+                else if(i >= largura && i % largura != 0 && i - 21 >= 0 && mapas[i - 21].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i - 21].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+                else{
+                    tent++;
+                }
+            }
+
+            // 2 = cima | diagonal: cima-direita (-19)
+            else if(direcao == 2){
+
+                if(i >= largura && i - 20 >= 0 && mapas[i - 20].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i - 20].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+
+                else if(i >= largura && i % largura != largura - 1 && i - 19 >= 0 && mapas[i - 19].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i - 19].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+                else{
+                    tent++;
+                }
+            }
+
+            // 3 = baixo | diagonal: baixo-direita (+21)
+            else{
+
+                if(i + largura < (int)mapas.size() && i + 20 < (int)mapas.size() && mapas[i + 20].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i + 20].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+
+                else if(i + largura < (int)mapas.size() && i % largura != largura - 1 && i + 21 < (int)mapas.size() && mapas[i + 21].bloco == "."){
+                    mapas[i].bloco = ".";
+                    mapas[i + 21].bloco = "8";
+                    ValidacaoDirecao = true;
+                }
+                else{
+                    tent++;
+                }
+            }
+        } while(ValidacaoDirecao == false && tent < 50);
     }
-    return;
 }
