@@ -5,19 +5,10 @@
 #include <iostream>
 using namespace std;
 
-// Funções do mapa
-
 struct Mapa{
     string bloco, blocoAlternativo;
     int valor;
 };
-
-void Criador(std::vector<Mapa> &mapas, int &qtde);
-void Imprimir(std::vector<Mapa> &mapas);
-void CaminhoGarantido(std::vector<Mapa> &mapas);
-void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino);
-
-//Funções das entidades
 
 struct Item{
     string nome, img;
@@ -25,7 +16,7 @@ struct Item{
 };
 
 struct Jogador{
-    int vida, estamina;
+    int vida = 100, estamina = 100;
     string ataques;
     double dinheiro = 0.0;
 
@@ -33,18 +24,33 @@ struct Jogador{
 };
 
 struct Monstro{
-    int vida, estamina; 
+    int vida = 100, estamina = 100; 
     string ataques; 
     
 };
 
+struct MapaCombate{
+    string bloco;
+};
+
+void Criador(std::vector<Mapa> &mapas, int &qtde);
+void Imprimir(std::vector<Mapa> &mapas, struct Jogador &player);
+void CaminhoGarantido(std::vector<Mapa> &mapas);
+void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino);
+
+//Funções das entidades
+
+
+
 //Mesmo bloco
-void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa, int &qtde);
-void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento, char &movimento, bool &ConcluiuMapa);
-void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento);
-void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento);
-void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento, bool &ConcluiuMapa);
+void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa, int &qtde, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
+void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento, char &movimento, bool &ConcluiuMapa, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
+void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
+void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
+void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, char &movimento, bool &ValidacaoMovimento, bool &ConcluiuMapa, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
+bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::vector<Mapa> &mapas, char &movimento);
 //;
+
 
 //Mesmo bloco
 void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &ValidacaoMovimento, std::vector<Mapa> &mapas);
@@ -53,11 +59,10 @@ void LargarItem(Jogador &player, std::vector<Item> &inventari, std::vector<Mapa>
 void ReorganizarItens(Jogador &player);
 //;
 
-bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::vector<Mapa> &mapas, char &movimento);
-
-void Combate();
-void MovimentoMonstro(std::vector<Mapa> &mapas, int &qtde);
-
+void CriadorCombate(std::vector<MapaCombate> &mapacombate);
+void ImprimirCombate(std::vector<MapaCombate> &mapacombate);
+bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, struct Monstro &oponente);
+void MovimentoMonstro(std::vector<Mapa> &mapas, int &qtdestd, ::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota, struct Jogador &player, bool &ValidacaoMovimento);
 
 Item CriarPocao(), CriarBroca();
 

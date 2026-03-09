@@ -188,10 +188,23 @@ void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino
     }
 }
 
-void Imprimir(std::vector<Mapa> &mapas){
+void Imprimir(std::vector<Mapa> &mapas, Jogador &player){
     int contador = 0;
+    int margem = 18;
 
     cout << "\n";
+    cout << string(margem, ' ') << " VIDA: " << player.vida << "\n";
+    cout << string(margem, ' ') << " ESTAMINA: " << player.estamina << "\n";
+    cout << string(margem, ' ') << " DINHEIRO: $" << player.dinheiro << "\n";
+    cout << string(margem, ' ') << "══════════════════════════════════════════\n\n";
+
+    cout << string(margem, ' ') << "╔";
+    for(int i = 0; i < 60; i++){
+        cout << "═";
+    }
+    cout << "╗\n";
+
+    cout << string(margem, ' ') << "║ ";
 
     for(int i = 0; i < mapas.size(); i++){
         cout << mapas[i].bloco << "  ";
@@ -199,8 +212,17 @@ void Imprimir(std::vector<Mapa> &mapas){
 
         if(contador == 20){
             contador = 0;
-            cout << "\n";
+            cout << "║\n";
+
+            if(i < mapas.size() - 1){
+                cout << string(margem, ' ') << "║ ";
+            }
         }
     }
-    cout << "\n";
+
+    cout << string(margem, ' ') << "╚";
+    for(int i = 0; i < 60; i++){
+        cout << "═";
+    }
+    cout << "╝\n\n";
 }

@@ -13,8 +13,11 @@ int main(){
 
     vector<Mapa> mapas(200);
     vector<Item> inventario;
+    vector<MapaCombate> mapacombate;
+    Monstro oponente;
     Jogador player;
-    bool Vitoria = false;
+
+    bool Derrota = false;
     int count = 0, qtde = 0; 
 
     do{
@@ -24,11 +27,12 @@ int main(){
         cout << "[DEBUG] Mapa gerado!\n";
 
         do{
-            Imprimir(mapas);
-            MovimentoJogador(mapas, player, inventario, ConcluiuMapa, qtde);
+            system("cls");
+            Imprimir(mapas, player);
+            MovimentoJogador(mapas, player, inventario, ConcluiuMapa, qtde, mapacombate, oponente, Derrota);
         } while(ConcluiuMapa == false);
 
-    } while(Vitoria == false);
+    } while(Derrota == false);
 
     return 0;
 }
