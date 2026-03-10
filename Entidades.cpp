@@ -402,7 +402,13 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
             cout << "\n Deseja coletar o item? \n";
             cout << "1 - Sim";
             cout << "2 - Não\n";
-            cin >> escolha;
+
+            while (!(cin >> escolha)) {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cout << "\nEntrada inválida. Digite um número: \n";
+                Sleep(1000);
+            }
 
             if(escolha == 1){
                 if(BlocoEspecial == "✚"){
@@ -554,7 +560,12 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
             cout << "\n Deseja coletar o item? \n";
             cout << "1 - Sim";
             cout << "2 - Não\n";
-            cin >> escolha;
+            while (!(cin >> escolha)) {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cout << "\nEntrada inválida. Digite um número: \n";
+                Sleep(1000);
+            }
 
             if(escolha == 1){
                 if(BlocoEspecial == "✚"){
@@ -708,7 +719,12 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
             cout << "\n Deseja coletar o item? \n";
             cout << "1 - Sim";
             cout << "2 - Não\n";
-            cin >> escolha;
+            while (!(cin >> escolha)) {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cout << "\nEntrada inválida. Digite um número: \n";
+                Sleep(1000);
+            }
 
             if(escolha == 1){
                 if(BlocoEspecial == "✚"){
@@ -862,7 +878,12 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
             cout << "\n Deseja coletar o item? \n";
             cout << "1 - Sim";
             cout << "2 - Não\n";
-            cin >> escolha;
+            while (!(cin >> escolha)) {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cout << "\nEntrada inválida. Digite um número: \n";
+                Sleep(1000);
+            }
 
             if(escolha == 1){
                 if(BlocoEspecial == "✚"){
