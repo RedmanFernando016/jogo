@@ -199,7 +199,7 @@ void Imprimir(std::vector<Mapa> &mapas, Jogador &player){
     cout << string(margem, ' ') << "══════════════════════════════════════════\n\n";
 
     cout << string(margem, ' ') << "╔";
-    for(int i = 0; i < 60; i++){
+    for(int i = 0; i < 61; i++){
         cout << "═";
     }
     cout << "╗\n";
@@ -221,7 +221,7 @@ void Imprimir(std::vector<Mapa> &mapas, Jogador &player){
     }
 
     cout << string(margem, ' ') << "╚";
-    for(int i = 0; i < 60; i++){
+    for(int i = 0; i < 61; i++){
         cout << "═";
     }
     cout << "╝\n\n";

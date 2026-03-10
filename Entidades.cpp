@@ -34,6 +34,12 @@ void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<I
             AbrirInventario(player, inventario, ValidacaoMovimento, mapas); 
         }
 
+        if(derrota == true){
+            cout << "\nVocê morreu!\n";
+            Sleep(3000);
+            abort();
+        }
+
         MovimentoMonstro(mapas, qtde, mapacombate, oponente, derrota, player, ValidacaoMovimento);
         
 
@@ -95,6 +101,7 @@ void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &Valid
 
         cout << string(margem, ' ') << "╠══════════════════════════════╣\n";
         cout << string(margem, ' ') << "║ [F] - Largar item            ║\n";
+        cout << string(margem, ' ') << "║ [P] - Utilizar Cura          ║\n";
         cout << string(margem, ' ') << "║ [Q] - Fechar inventário      ║\n";
         cout << string(margem, ' ') << "╚══════════════════════════════╝\n\n";
 
@@ -105,10 +112,50 @@ void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &Valid
             LargarItem(player, inventario, mapas);
         }
 
+        if(input == 'P' || input =='p'){
+            Cura(player);
+        }
+
     } while(input != 'q' && input != 'Q');
 
     ValidacaoMovimento = true;
     return;
+}
+
+void Cura(Jogador &player){
+    bool TemCura = false;
+    int idx;
+
+    for(int i = 0; i < 3; i++){
+        if(player.inventario[i].img == "✚"){
+            if(TemCura = true);
+            idx = i;
+            break;
+        }
+    }
+    if(TemCura == true){
+        if(player.vida == 100){
+            cout << "\nVida já está cheia!\n";
+            Sleep(1000);
+            return;
+        }
+
+        player.inventario[idx].img = "";
+        player.inventario[idx].nome = "";
+        ReorganizarItens(player);
+
+        player.vida += 80;
+        if(player.vida > 100){
+            player.vida = 100;
+        }
+        return;
+    }
+
+    if(TemCura == false){
+        cout << "\nSem cura para utilizar!\n";
+        Sleep(1000);
+        return;
+    }
 }
 
 bool AdicionarItem(Jogador &player, const Item &novo){
@@ -132,6 +179,7 @@ void LargarItem(Jogador &player, std::vector<Item> &inventario, std::vector<Mapa
 
     if (escolha < 1 || escolha > 3){
         cout << "Slot inválido!\n";
+        Sleep(1000);
         return;
     }
 
@@ -139,11 +187,13 @@ void LargarItem(Jogador &player, std::vector<Item> &inventario, std::vector<Mapa
 
     if (player.inventario[idxSlot].nome == ""){
         cout << "Esse slot já está vazio!\n";
+        Sleep(1000);
         return;
     }
 
     if (BlocoEspecial != "nulo"){
         cout << "Já tem um item no chão nessa posição. Pegue/ande antes de largar outro.\n";
+        Sleep(2000);
         return;
     }
 
@@ -206,7 +256,7 @@ bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::v
                 return false;
             } else if(escolha == 1){
                 cout << "\nQuebrando...\n";
-                Sleep(100);
+                Sleep(1000);
 
                 player.inventario[i].nome = "";
                 player.inventario[i].img = "";
@@ -230,6 +280,7 @@ bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::v
                 }
             } else {
                 cout << "\nOpção inválida!\n";
+                Sleep(1000);
                 return false;
             }
         }
@@ -252,6 +303,7 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
         
     if(idx % largura == largura - 1){
         cout << "Movimento inválido, tente novamente!\n";
+        Sleep(1000);
         ValidacaoMovimento = true;
         return;
     }
@@ -264,6 +316,7 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
 
         ValidacaoMovimento = false;
         cout << "\nMovimento inválido, tente novamente! \n";
+        Sleep(1000);
         return;
 
     } else if(mapas[idx + 1].bloco == "Q"){
@@ -357,10 +410,12 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nPoção de cura adicionado ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -370,10 +425,12 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nBroca adicionada ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -384,6 +441,7 @@ void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, st
                 return;
             } else {
                 cout << "\nOpção inválida, tente novamente!\n";
+                Sleep(1000);
             }
         } 
 
@@ -416,6 +474,7 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
 
         ValidacaoMovimento = false;
         cout << "\nMovimento inválido, tente novamente! \n";
+        Sleep(1000);
         return;
 
     } else if(BlocoEspecial != "nulo"){
@@ -503,10 +562,12 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nPoção de cura adicionado ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -517,10 +578,12 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nBroca adicionada ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -533,6 +596,7 @@ void AndarEsquerda(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, s
 
             } else {
             cout << "\nOpção inválida, tente novamente!\n";
+            Sleep(1000);
             }    
         }    
     } while(escolha < 1 && escolha > 2);
@@ -551,6 +615,7 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
 
     if(idx < largura){
         cout << "Movimento inválido, tente novamente!\n";
+        Sleep(1000);
         ValidacaoMovimento = true;
         return;
     }
@@ -563,6 +628,7 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
 
         ValidacaoMovimento = false;
         cout << "\nMovimento inválido, tente novamente! \n";
+        Sleep(1000);
         return;
 
     } else if(BlocoEspecial != "nulo"){
@@ -650,10 +716,12 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nPoção de cura adicionado ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -663,10 +731,12 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nBroca adicionada ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -677,6 +747,7 @@ void AndarCima(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::
                 return;
             } else {
                 cout << "\nOpção inválida, tente novamente!\n";
+                Sleep(1000);
             }
         }
     } while(escolha < 1 && escolha > 2);
@@ -694,6 +765,7 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
 
     if(idx + largura >= mapas.size()){
         cout << "Movimento inválido, tente novamente!\n";
+        Sleep(1000);
         ValidacaoMovimento = true;
         return;
 
@@ -705,6 +777,7 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
 
         ValidacaoMovimento = false;
         cout << "\nMovimento inválido, tente novamente! \n";
+        Sleep(1000);
         return;
 
     } else if(mapas[idx + 20].bloco == "Q"){
@@ -797,10 +870,12 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nPoção de cura adicionado ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -811,10 +886,12 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
 
                     if(AdicionarItem(player, novo) == false){
                         cout << "inventário cheio!";
+                        Sleep(1000);
                         ValidacaoMovimento = false;
                         return;
                     } else {
                         cout << "\nBroca adicionada ao inventário!\n";
+                        Sleep(1000);
                         ValidacaoMovimento = true;
                         BlocoEspecial = "nulo";
                         return;
@@ -825,6 +902,7 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
                 return;
             } else {
                 cout << "\nOpção inválida, tente novamente!\n";
+                Sleep(1000);
             }
         }
     } while(escolha < 1 && escolha > 2);

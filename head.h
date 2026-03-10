@@ -40,8 +40,6 @@ void DecidirCaminho(std::vector<Mapa> &mapas, int largura, int &idx, int destino
 
 //Funções das entidades
 
-
-
 //Mesmo bloco
 void MovimentoJogador(std::vector<Mapa> &mapas, struct Jogador &player, vector<Item> &inventario, bool &ConcluiuMapa, int &qtde, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
 void AndarDireita(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std::string &BlocoEspecial, bool &ValidacaoMovimento, char &movimento, bool &ConcluiuMapa, std::vector<MapaCombate> &mapacombate, struct Monstro &oponente, bool &derrota);
@@ -51,12 +49,12 @@ void AndarBaixo(std::vector<Mapa> &mapas, struct Jogador &player, int &idx, std:
 bool QuebrarParede(struct Jogador &player, std::vector<Item> &inventario, std::vector<Mapa> &mapas, char &movimento);
 //;
 
-
 //Mesmo bloco
 void AbrirInventario(Jogador &player, std::vector<Item> &inventario, bool &ValidacaoMovimento, std::vector<Mapa> &mapas);
 bool AdicionarItem(Jogador &player, const Item &novo);
 void LargarItem(Jogador &player, std::vector<Item> &inventari, std::vector<Mapa> &mapas);
 void ReorganizarItens(Jogador &player);
+void Cura(Jogador &player);
 //;
 
 void CriadorCombate(std::vector<MapaCombate> &mapacombate);

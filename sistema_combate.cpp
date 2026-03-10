@@ -14,22 +14,45 @@ void CriadorCombate(std::vector<MapaCombate> &mapacombate){
     }
 
     mapacombate[10].bloco = "@";
-    mapacombate[15].bloco = "8";
+    mapacombate[14].bloco = "8";
 }
 
 void ImprimirCombate(std::vector<MapaCombate> &mapacombate){
+
     int count = 0;
+    int margem = 18;
+
+    cout << "\n";
+
+    cout << string(margem,' ') << "╔";
+    for(int i = 0; i < 17; i++){
+        cout << "═";
+    }
+    cout << "╗\n";
+
+    cout << string(margem,' ') << "║ ";
 
     for(int i = 0; i < mapacombate.size(); i++){
-        cout << " " << mapacombate[i].bloco << " ";
+
+        cout << mapacombate[i].bloco << " ";
         count++;
 
         if(count == 8){
-            cout << "\n";
             count = 0;
+
+            cout << "║\n";
+
+            if(i < mapacombate.size() - 1){
+                cout << string(margem,' ') << "║ ";
+            }
         }
     }
-    cout << "\n";
+
+    cout << string(margem,' ') << "╚";
+    for(int i = 0; i < 17; i++){
+        cout << "═";
+    }
+    cout << "╝\n\n";
 }
 
 bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, struct Monstro &oponente){
@@ -49,7 +72,7 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
 //atqaue player
         do{
             system("cls");
-            cout << "       LUTA       \n";
+            cout << "                          LUTA                          ";
             CriadorCombate(mapacombate);
             ImprimirCombate(mapacombate);
             cout << "1 - Soco    2 - Chute    3 - Picaretada    4 - Curar    5 - Defender\n";  
@@ -59,21 +82,26 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
                 cin.clear();
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 cout << "\nEntrada inválida. Digite um número: \n";
+                Sleep(1000);
             }
 
             if(acao < 1 || acao > 5){
                 cout << "\noperação inválida, tente novamente!\n";
+                Sleep(1000);
                 verificacao = false;
             }
 
             if(acao == 1){
                 if(player.estamina < 20){
                     cout << "Sem estamina\n";
+                    Sleep(1000);
                     verificacao = false;
                 } else {
                     oponente.vida -= 20;
                     player.estamina -= 20;
                     cout << "\nVocê ataca com um soco poderoso!\n";
+                    cout << "-20HP -> Monstro\n";
+                    Sleep(1000);
                     verificacao = true;
                 }
             }
@@ -81,11 +109,14 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
             if(acao == 2){
                 if(player.estamina < 30){
                     cout << "\nSem estamina\n";
+                    Sleep(1000);
                     verificacao = false;
                 } else {
                     oponente.vida -= 30;
                     player.estamina -= 30;
                     cout << "\nVocê ataca com um chute poderoso!\n";
+                    cout << "-30HP -> Monstro\n";
+                    Sleep(1000);
                     verificacao = true;
                 }
             }
@@ -100,6 +131,8 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
                             idx = i;
                             validacao = true;
                             cout << "\nVocê quebra a broca na cabeça do monstro!\n";
+                            cout << "-75HP -> Monstro\n";
+                            Sleep(1000);
                             break;
                         }
                     }
@@ -116,10 +149,12 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
 
                     if(validacao == false){
                         cout << "Sem Picaretas no inventário!\n";
+                        Sleep(1000);
                         verificacao = false;
                     }
                 } else {
                     cout << "Sem estamina!\n";
+                    Sleep(1000);
                     verificacao = false;
                 }   
             }
@@ -138,8 +173,10 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
                 }
 
                 if(validacao == true){
-                    cout << "\nCurando...";
+                    cout << "\nCurando...\n";
                     Sleep(2000);
+                    cout << "+80 HP -> Player\n";
+                    Sleep(1000);
 
                     player.vida += 80;
                     if(player.vida > 100){
@@ -154,6 +191,7 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
                 
                 if(validacao == false){
                     cout << "Sem curas no inventario!\n";
+                    Sleep(1000);
                     verificacao = false;
                 }     
             }
@@ -165,6 +203,8 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
         } while(verificacao == false);
 
         if(player.vida >= 1 && oponente.vida <= 0){
+            cout << "\nMonstro derrotado!\n";
+             Sleep(2000);
             return true;
         }
 
@@ -179,14 +219,17 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
 
                 if(a <= 49){
                     cout << "Oponente ataca com um soco poderoso, porém é bloqueado!\n";
+                    Sleep(1000);
                 } else {
                     cout << "Oponente ataca com um soco poderoso que quebra o bloqueio do jogador!\n";
                     cout << "-10 HP\n";
+                    Sleep(1000);
                     player.vida -= 10;
                 }
             } else{ 
                 cout << "Oponente ataca com um soco poderoso!\n";
                 cout << "-10 HP\n";
+                Sleep(1000);
                 player.vida -= 10;
             }
         }
@@ -198,14 +241,17 @@ bool Combate(std::vector<MapaCombate> &mapacombate, struct Jogador &player, stru
 
                 if(a <= 49){
                     cout << "Oponente ataca com um chute veloz, porém é bloqueado!\n";
+                    Sleep(1000);
                 } else {
                     cout << "Oponente Ataca com um chute veloz que é capaz de quebrar o bloqueio do jogador!\n";
                     cout << "-15 HP\n";
+                    Sleep(1000);
                     player.vida -= 15;
                 }
             } else {
                 cout << "Oponente Ataca com um chute veloz!\n";
                 cout << "-15 HP\n";
+                Sleep(1000);
                 player.vida -= 15;
             }
             
